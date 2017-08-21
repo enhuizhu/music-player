@@ -1,4 +1,7 @@
 /* CSS declarations go here */
+* {
+    box-sizing: border-box;
+}
 .header{
     img {
         width: 100%;
@@ -6,9 +9,37 @@
 }
 
 .song-list-container {
-    font-size: 13px;
+    font-size: 14px;
     
     .song-item {
+        .thumbnail-wrapper {
+            float: left;
+            position: relative;
+            width: 129px;
+            text-align: center;
+
+            &:hover {
+                .overlay {
+                    display: block;
+                }
+            }
+
+            .overlay {
+                display: none;
+                font-size: 14px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                padding: 5px;
+
+                .btn {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
         .info-wrapper {
             float: left;
             margin-left: 10px;
@@ -34,6 +65,88 @@
                     white-space: nowrap;
                 }
             }
+        }
+    }
+}
+
+
+//scss for player
+.player {
+    padding: 26px 10px;
+    background-color: #47a2f7;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+
+    .song-info, .control-button, .time-line {
+        float: left;
+        text-align: center
+    }
+
+    .song-info {
+        width: 15%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .control-button {
+        $size: 30px;
+        width: 123px;
+        font-size: 18px;
+        
+        span {
+            width: $size;
+            height: $size;
+            cursor: pointer;
+
+            &:nth-child(2) {
+                margin: 0 10px;
+            }
+
+            &.disable {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .time-line {
+        width: calc(85% - 123px);
+
+        .line-wrapper {
+            width: calc(100% - 100px);
+            height: 5px;
+            background-color: grey;
+            float: left;
+            position: relative;
+            top: 8px;
+
+            .song-progress-bar {
+                position: absolute;
+                height: 100%;
+                width: 0;
+                background-color: white;
+
+                &:after {
+                    $size: 13px;
+                    content: '';
+                    display: block;
+                    width: $size;
+                    height: $size;
+                    border-radius: 50%;
+                    background: white;
+                    right: -3px;
+                    position: absolute;
+                    top: -3px;
+                }
+            }
+        }
+
+        .time-text {
+            width: 100px;
+            float: left;
         }
     }
 }
