@@ -1,0 +1,37 @@
+/* CSS declarations go here */
+.header{
+    img {
+        width: 100%;
+    }
+}
+
+.song-list-container {
+    .song-item {
+        .info-wrapper {
+            float: left;
+            margin-left: 10px;
+            
+            .fa {
+                margin-right: 5px;
+            }
+        }
+
+        @media screen and (max-width: 490px) {
+            img, .info-wrapper {
+                float: none !important;
+                display: block;
+            }
+
+            .info-wrapper {
+                margin-top: 10px;
+
+                .info-item {
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}
