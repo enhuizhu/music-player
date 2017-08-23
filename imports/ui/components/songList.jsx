@@ -16,7 +16,6 @@ class SongList extends Component {
                         <img src={v.artwork_url} className='img-thumbnail'/>
                         
                         <div className='overlay'>
-                            <div><button className='btn btn-info'>Play</button></div>
                             <div><button className='btn btn-info' onClick={() => {this.props.addToPlayList(v);}}>Add To Playlist</button></div>
                         </div>
                     </div>

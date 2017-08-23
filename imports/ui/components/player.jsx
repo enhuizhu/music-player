@@ -36,15 +36,6 @@ class Player extends Component {
         this.audio.src= '';
         this.audio.src = `/songs/${song.track_path}`;
         this.audio.currentTime = 0;
-        
-        // this.audio.onloadeddata = (data) => {
-        //     console.log('data', data);
-        //     console.log('duration', this.audio.duration);
-        // }
-
-        // this.audio.ondurationchange = (data) => {
-        //     console.log('duration data', data);
-        // }
 
         this.audio.ontimeupdate = (data) => {
             let percentage = (this.audio.currentTime / this.audio.duration) * 100 + '%';
@@ -93,6 +84,7 @@ class Player extends Component {
 
         for(let k in this.props.list) {
             if (this.props.list[k]._id == this.state.activeSong._id) {
+                this.props.list[k].isPlaying = false;
                 preIndex = parseInt(k) - 1;
                 break;
             }
@@ -113,6 +105,7 @@ class Player extends Component {
 
         for(let k in this.props.list) {
             if (this.props.list[k]._id == this.state.activeSong._id) {
+                this.props.list[k].isPlaying = false;
                 nextIndex = parseInt(k, 10) + 1;
                 break;
             }
@@ -146,31 +139,42 @@ class Player extends Component {
 
     render() {
         let content = <div></div>;
+        
+        let songList = this.props.list.map((v, i) => {
+            return <div className={`item ${v.isPlaying ? 'active': ''}`} key={i}>{v.artist} &nbsp;&nbsp; {v.title}</div>;
+        });
+
 
         if (!_.isEmpty(this.state.activeSong)) {
             content = (
-                <div className='player'>
-                    <div className='song-info'>
-                      {this.state.activeSong.artist} &nbsp;&nbsp; {this.state.activeSong.title}                
+                <div>
+                    <div className='song-list'>
+                        <div className='title'>Play List</div>
+                        {songList}
                     </div>
-
-                    <div className='control-button'>
-                        <span className={`glyphicon glyphicon-step-backward ${this.doesPreAvilabe() ? '' : 'disable'}`} onClick={this.playPre}></span>
-                        <span className={`glyphicon ${this.state.activeSong.isPlaying ? 'glyphicon-stop' : 'glyphicon-play'}`} onClick={this.toogleAudio}></span>
-                        <span className={`glyphicon glyphicon-step-forward ${this.doesNextAvilable() ? '' : 'disable'}`} onClick={this.playNext}></span>
-                    </div>
-
-                    <div className='time-line'>
-                        <div className='line-wrapper'>
-                            <div className='song-progress-bar' style={{'width': this.state.progress}}></div>
+                    <div className='player'>                     
+                        <div className='song-info'>
+                          {this.state.activeSong.artist} &nbsp;&nbsp; {this.state.activeSong.title}                
                         </div>
 
-                        <div className='time-text'>
-                            {this.getTimeLeft()}
-                        </div>    
-                    </div>
+                        <div className='control-button'>
+                            <span className={`glyphicon glyphicon-step-backward ${this.doesPreAvilabe() ? '' : 'disable'}`} onClick={this.playPre}></span>
+                            <span className={`glyphicon ${this.state.activeSong.isPlaying ? 'glyphicon-stop' : 'glyphicon-play'}`} onClick={this.toogleAudio}></span>
+                            <span className={`glyphicon glyphicon-step-forward ${this.doesNextAvilable() ? '' : 'disable'}`} onClick={this.playNext}></span>
+                        </div>
 
-                    <div className='clearfix'></div>
+                        <div className='time-line'>
+                            <div className='line-wrapper'>
+                                <div className='song-progress-bar' style={{'width': this.state.progress}}></div>
+                            </div>
+
+                            <div className='time-text'>
+                                {this.getTimeLeft()}
+                            </div>    
+                        </div>
+
+                        <div className='clearfix'></div>
+                    </div>
                 </div>
             );
         }

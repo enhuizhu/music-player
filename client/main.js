@@ -6,5 +6,5 @@ import { Songs } from '../imports/api/songs'
 import App from '../imports/ui/app.jsx';
 
 Meteor.startup(() => {
-	render(<App/> , document.getElementById('app'));
+	render(<App test='hello'/> , document.getElementById('app'));
 });

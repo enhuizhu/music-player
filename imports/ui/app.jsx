@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor'
 import Header from './components/header';
 import Player from './components/player';
 import SongList from './components/songList';
+import _ from 'lodash';
 
 class App extends Component {
 	constructor(props) {
@@ -21,13 +22,9 @@ class App extends Component {
 	  		genre: -1
 	  	};
 
-	  	this.clickToPlay = this.clickToPlay.bind(this);
 	  	this.addToPlayList = this.addToPlayList.bind(this);
 	  	this.sort = this.sort.bind(this);
-	}
-
-	componentDidMount() {
-	
+	  	this.filter = this.filter.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -50,10 +47,6 @@ class App extends Component {
 		this.setState({songs: newSongs});
 	}
 
-	clickToPlay(songInfo) {
-	
-	}
-
 	addToPlayList(songInfo) {
 		let newPlayList = this.state.playList;
 		//check if songInfo already in the list
@@ -71,34 +64,50 @@ class App extends Component {
 		this.setState({playList: newPlayList});
 	}
 
+	filter(e) {
+		const input = e.target.value.toLocaleLowerCase();
+
+		if (_.isEmpty(input)) {
+			this.setState({songs: this.props.songs});
+			return ;
+		}
+
+		//filter the list
+		let newList = this.state.songs.filter(v => {
+			return v.artist.toLocaleLowerCase().indexOf(input) !== -1 
+				|| v.title.toLocaleLowerCase().indexOf(input) !== -1 
+				|| v.genre.toLocaleLowerCase().indexOf(input) !== -1;
+		});
+
+		this.setState({songs: newList});
+	}
 
 	render() {
-		return (
+		return (  
 			<div>
 				<Header/>
-				<div>
-					<button className='btn btn-primary' onClick={this.sort.bind(this, 'title')}>Sort by title</button>
-					<button className='btn btn-primary' onClick={this.sort.bind(this, 'artist')}>Sort by artist</button>
-					<button className='btn btn-primary' onClick={this.sort.bind(this, 'genre')}>Sort by gene</button>
+				<div className='form-inline'>
+				    <div className='form-group'>
+						<input type='text' placeholder='search' className='form-control' onChange={this.filter}/>
+					</div>
+					<div className='form-group'>
+						<button className='btn btn-primary' onClick={this.sort.bind(this, 'title')}>Sort by title</button>
+						<button className='btn btn-primary' onClick={this.sort.bind(this, 'artist')}>Sort by artist</button>
+						<button className='btn btn-primary' onClick={this.sort.bind(this, 'genre')}>Sort by gene</button>
+					</div>
 				</div>
 				<SongList songs={this.state.songs} clickToPlay={this.clickToPlay} addToPlayList={this.addToPlayList}/>
 				<Player list={this.state.playList}/>
 			</div>
-		);
+		);	
 	}
 }
 
 // export default App;
 
-export default createContainer(() => {
+export default createContainer((props) => {
 	return {
-		songs: Songs.find().fetch(),
-		sort: function(name, order) {
-			let sortObj = {};
-			sortObj[name] = order
-			this.songs = Songs.find({}, {sort: sortObj}).fetch();
-
-			console.log('this.songs', this.songs);
-		}
+		songs: Songs.find().fetch()		
 	}
+
 }, App);

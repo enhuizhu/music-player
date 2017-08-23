@@ -1,3 +1,5 @@
+$mainColor: #47a2f7;
+
 /* CSS declarations go here */
 * {
     box-sizing: border-box;
@@ -69,20 +71,58 @@
     }
 }
 
+.song-list {
+    position: fixed;
+    height: 300px;
+    width: 200px;
+    max-height: calc(100vh - 127px);
+    left: -180px;
+    background: $mainColor;
+    bottom: 185px;
+    z-index: 998;
+    transition: all 2s;
+    color: white;
+    padding-top: 10px;
+
+    .title {
+        text-align: center;
+    }
+
+    &:hover {
+        left: 0px;
+    }
+
+    .item {
+        width: 100%;
+        padding: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.active {
+            font-weight: bolder;
+            color: #e0b5f5;
+        }
+    }
+}
 
 //scss for player
 .player {
     padding: 26px 10px;
-    background-color: #47a2f7;
+    background-color: $mainColor;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     color: white;
+    // position: relative;
+    z-index: 1000;
 
     .song-info, .control-button, .time-line {
         float: left;
-        text-align: center
+        text-align: center;
+        position: relative;
+        z-index: 1000;
     }
 
     .song-info {
